@@ -1,3 +1,5 @@
 # DarkIB
 Dark Image Board. 
-Simple image board with tags, based on Flask.
+Simple image board with tags. 
+Framework: Flask.
+Database: MySQL
