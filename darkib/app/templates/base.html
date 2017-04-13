@@ -1,0 +1,28 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{title}} - Dark IB</title>
+    {% else %}
+    <title>Dark Image Board.</title>
+    {% endif %}
+    <link href="/static/css/main.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+    <div><h4>Dark-IB:<h4>
+      <a href="/">Menu Item1</a>
+      <a href="/">Menu Item2</a>
+      <a href="/">Menu Iten3</a>
+    </div>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </body>
+</html>
