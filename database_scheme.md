@@ -20,3 +20,9 @@
 ### TAG - PIC
 * id_tag
 * id_pic
+
+### Users
+* id
+* name
+* email
+* pswd_hash
