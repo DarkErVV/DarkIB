@@ -1,5 +1,6 @@
 #DATABASE
 
+Tables:
 ##Image
 * id - usigned bigint, uniq index
 * md5_hash - text
