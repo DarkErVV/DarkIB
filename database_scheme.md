@@ -16,3 +16,7 @@
 * id - int, index,
 * name
 * type (char name, author, title,  etc)
+
+### TAG - PIC
+* id_tag
+* id_pic
