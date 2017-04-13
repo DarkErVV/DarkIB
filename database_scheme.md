@@ -1,7 +1,6 @@
-#DATABASE
-
-Tables:
-##Image
+## DATABASE
+### Tables:
+#### Image
 * id - usigned bigint, uniq index
 * md5_hash - text
 * size - int, kb
@@ -13,7 +12,7 @@ Tables:
 * uid - foreigh key, int, id uploaded user
 
 
-##Tags
+### Tags
 * id - int, index,
 * name
 * type (char name, author, title,  etc)
