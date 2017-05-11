@@ -1,4 +1,5 @@
-###TODO###
+### TODO
+
 - Install venv
 - Create basic Flask application
 - Disign database structure
