@@ -29,7 +29,7 @@
 ### Users
 | Name | Type | Discription |
 | -----| :---:| :-----------|
-| id| int |||
-| name| text ||
-| email|text||
-| pswd_hash |text||
+| id| int(11) |||
+| name| varchar(255) ||
+| email|varchar(255)||
+| pswd_hash |varchar(40)||
