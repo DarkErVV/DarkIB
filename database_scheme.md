@@ -1,22 +1,35 @@
 ## DATABASE
 ### Tables:
-#### Image
-* id - usigned bigint, uniq index
-* md5_hash - text
-* size - int, kb
-* height - int
-* width - int
-* type - 0: gif, 
-         1: png,
-         2: jpg,  
-* uid - foreigh key, int, id uploaded user
+
+### Image
+| Name | Type | Discription |
+| -----| :---:| :-----------|
+| id | usigned bigint | uniq index
+| md5_hash | text| |
+| size | int| file size in kb |
+| height | int | pixels |
+| width | int | pixels  |
+| type | smallint | 0: gif, 1: png,   2: jpg,|
+| uid  | foreigh key, int| id uploaded user |
 
 
 ### Tags
-* id - int, index,
-* name
-* type (char name, author, title,  etc)
+| Name | Type | Discription |
+| -----| :---:| :-----------|
+| id  | int| uniq index|
+| name | text | tag name |
+| type | text? | tag type (character name, author, title, or etc)|
 
 ### TAG - PIC
-* id_tag
-* id_pic
+| Name | Type | Discription |
+| -----| :---:| :-----------|
+| id_tag | int ||
+| id_pic | int ||
+
+### Users
+| Name | Type | Discription |
+| -----| :---:| :-----------|
+| id| int(11) |||
+| name| varchar(255) ||
+| email|varchar(255)||
+| pswd_hash |varchar(40)||

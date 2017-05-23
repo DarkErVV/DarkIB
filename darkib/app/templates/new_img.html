@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>New images.</h3>
+    {% for img in range(10) %}
+        <div> IMG {{ img  }} </div>
+    {% endfor %}
+{% endblock%}
