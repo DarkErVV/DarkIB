@@ -25,7 +25,7 @@ def register():
     db.session.add(user)
     db.session.commit()
     flash('User succefully registred')
-    return redirected(url_for('login'))
+    return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -38,4 +38,4 @@ def login():
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirected(url_for('index'))
+    return redirect(url_for('index'))
