@@ -29,7 +29,8 @@
 ### Users
 | Name | Type | Discription |
 | -----| :---:| :-----------|
-| id| int(11) |||
-| name| varchar(255) ||
-| email|varchar(255)||
-| pswd_hash |varchar(40)||
+| user_id| int(11) |||
+| username| varchar(20) ||
+| password |varchar(10)||
+| email|varchar(50)||
+| registred_on |datetime)||
