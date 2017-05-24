@@ -1,5 +1,5 @@
-from flask import render_template, flash, redirect, session, url_for, request
-from app import app, db
+from flask import render_template, flash, redirect, session, url_for, request, g
+from app import app, db, lm 
 from flask_login import login_user, logout_user, current_user, login_required
 from .forms import LoginForm
 from models import User
@@ -7,7 +7,8 @@ from models import User
 @app.route('/')
 @app.route('/index')
 def index():
-    return  render_template("index.html")
+    user = g.user
+    return  render_template("index.html", user=user )
 
 @app.route('/new')
 def new_img():
@@ -33,9 +34,32 @@ def login():
     if request.method == 'GET':
         return render_template('login.html')
 
-    return  redirect(url_for('index'))
+    #Get data from request
+    username = request.form['username']
+    password = request.form['password']
+
+    #Database Query
+    registered_user = User.query.filter_by(username=username, password=password).first()
+
+    #User is not present in database
+    if registered_user is None:
+        flash('Username or Password is invalid', 'error')
+        return redirect(url_for('login'))
+
+    login_user(registered_user)
+    flash('Logged in successfully')
+
+    return  redirect(request.args.get(next) or url_for('index'))
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.before_request
+def before_request():
+    g.user = current_user
+
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))

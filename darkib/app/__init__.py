@@ -11,7 +11,8 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 #Login Manager
-login_manager = LoginManager()
-login_manager.init_app(app)
+lm = LoginManager()
+lm.init_app(app)
+lm.login_view = 'login'
 
 from app import views, models
