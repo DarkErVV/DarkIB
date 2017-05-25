@@ -11,3 +11,7 @@ SECRET_KEY = 'do not forget change it'
 SQLALCHEMY_DATABASE_URI = 'mysql://darkib_admin:its2forme@localhost/darkib'
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repo')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+#Upload settings
+UPLOAD_FOLDER = 'uploads/'
+ALLOWED_EXTENSIONS = set([ 'png', 'jpg', 'jpeg', 'gif'])
