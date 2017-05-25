@@ -5,6 +5,7 @@ from .forms import LoginForm
 from models import User, Images
 from werkzeug.utils import secure_filename
 from os import path
+from hashlib import md5
 
 @app.route('/')
 @app.route('/index')
@@ -103,7 +104,9 @@ def upload_file():
             filename = secure_filename(file.filename)
             save_path = path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(save_path)
-            return redirect(url_for('uploaded_file',  filename=filename))
+
+            flash('File succefuly uploaded. MD5:' + calc_md5(save_path) )
+            return redirect(url_for('index'))
 
     return render_template('upload.html')
 
@@ -111,3 +114,10 @@ def upload_file():
 @login_required
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+def calc_md5(fname):
+    hash_md5 = md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
