@@ -13,5 +13,5 @@ SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repo')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 #Upload settings
-UPLOAD_FOLDER = 'uploads/'
+UPLOAD_FOLDER = 'app/media/img/'
 ALLOWED_EXTENSIONS = set([ 'png', 'jpg', 'jpeg', 'gif'])
