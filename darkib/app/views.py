@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
-from app import app, db, lm 
+from app import app, db, lm
 from flask_login import login_user, logout_user, current_user, login_required
 from .forms import LoginForm
 from models import User
@@ -67,3 +67,13 @@ def load_user(id):
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+@app.route('/user/<nickname>')
+@login_required
+def user(nickname):
+    if user == None:
+        flash('User %s not found.' % nickname)
+        return redirect(url_for('index'))
+
+    return render_template('user.html', user=g.user)
+

@@ -1,6 +1,5 @@
 from app import db
 from datetime import datetime
- 
 
 ROLE_USER = 0
 ROLE_ADMIN = 1
@@ -11,6 +10,7 @@ class User(db.Model):
     password = db.Column('password', db.String(10))
     email = db.Column('email', db.String(50))
     registred_on = db.Column('registred_on', db.DateTime)
+    images = db.relationship('Images', backref='author', lazy='dynamic')
 
     def __init__( self, username, password, email):
         self.username = username
@@ -30,3 +30,13 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % (self.username)
 
+class Images(db.Model):
+    id =  db.Column( db.Integer, primary_key = True) 
+    md5_hash =  db.Column( db.String(40) )
+    height = db.Column( db.Integer )
+    weight = db.Column( db.Integer )
+    type = db.Column( db.Integer )
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+
+def __repr__(self):
+    return '<Post %r>' % (self.body)
