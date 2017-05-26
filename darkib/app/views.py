@@ -98,7 +98,7 @@ def upload_file():
         # if user does not select file, browser also
         # submit a empty part without filename
         if file.filename == '':
-            flash('No selected file')
+            flash('No selected file!')
             return redirect(request.url)
 
         if file and allowed_file(file.filename):
@@ -110,6 +110,9 @@ def upload_file():
 
             save_path = path.join(save_dir, md5_hash)
             file.save(save_path)
+            img = Images(md5_hash, g.user.id)
+            db.session.add(img)
+            db.session.commit()
 
             flash('File succefuly uploaded. MD5: ' + md5_hash )
             return redirect(url_for('index'))
