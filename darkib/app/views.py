@@ -81,7 +81,6 @@ def user(nickname):
     return render_template('user.html', user=g.user)
 
 #Upload
-
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -95,17 +94,21 @@ def upload_file():
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
+
         # if user does not select file, browser also
         # submit a empty part without filename
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
+
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            save_path = path.join(app.config['UPLOAD_FOLDER'], filename)
+            #calculating MD5 Hash and use it as filename
+            md5_hash = calc_md5(file)
+
+            save_path = path.join(app.config['UPLOAD_FOLDER'], md5_hash)
             file.save(save_path)
 
-            flash('File succefuly uploaded. MD5:' + calc_md5(save_path) )
+            flash('File succefuly uploaded. MD5: ' + md5_hash )
             return redirect(url_for('index'))
 
     return render_template('upload.html')
@@ -117,7 +120,6 @@ def uploaded_file(filename):
 
 def calc_md5(fname):
     hash_md5 = md5()
-    with open(fname, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
+    for chunk in iter(lambda: fname.read(4096), b""):
+        hash_md5.update(chunk)
     return hash_md5.hexdigest()
