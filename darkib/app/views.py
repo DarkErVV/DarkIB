@@ -6,6 +6,9 @@ from models import User, Images
 from werkzeug.utils import secure_filename
 from os import path, makedirs
 from hashlib import md5
+from PIL import Image
+import tempfile
+import shutil
 
 @app.route('/')
 @app.route('/index')
@@ -102,15 +105,35 @@ def upload_file():
             return redirect(request.url)
 
         if file and allowed_file(file.filename):
+            temp_file = tempfile.NamedTemporaryFile()
+            file.save(temp_file)
+
             #calculating MD5 Hash and use it as filename
-            md5_hash = calc_md5(file)
-            save_dir = path.join( app.config['UPLOAD_FOLDER'], md5_hash[0:3])
+            md5_hash = calc_md5( temp_file.name )
+            save_dir = path.join( app.config['UPLOAD_FOLDER'], md5_hash[0:3] )
             if not path.exists( save_dir ):
                 makedirs( save_dir )
 
             save_path = path.join(save_dir, md5_hash)
-            file.save(save_path)
-            img = Images(md5_hash, g.user.id)
+            shutil.copy2(temp_file.name, save_path)
+
+            temp_file.close()
+
+            #get resolution of image
+            im = Image.open(save_path)
+            
+            print(im)
+
+            im_type = 0
+
+            if im.format == 'JPEG':
+               im_type = 0
+            elif im.format == 'PNG':
+                im_type = 1
+            elif im.format == 'GIF':
+                im_type = 2
+
+            img = Images(md5_hash, im.size[1], im.size[0], im_type, g.user.id)
             db.session.add(img)
             db.session.commit()
 
@@ -126,6 +149,7 @@ def uploaded_file(filename):
 
 def calc_md5(fname):
     hash_md5 = md5()
-    for chunk in iter(lambda: fname.read(4096), b""):
-        hash_md5.update(chunk)
+    with open(fname, "rb" ) as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
     return hash_md5.hexdigest()

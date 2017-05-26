@@ -36,10 +36,12 @@ class Images(db.Model):
     date_upload = db.Column( db.DateTime )
     user_id = db.Column( db.Integer, db.ForeignKey('user.user_id') )
 
-    def __init__(self, md5_hash, user_id):
+    def __init__(self, md5_hash, h, w, im_type, user_id):
         self.md5_hash = md5_hash
         self.user_id = user_id
-        self.type = 0
+        self.height = h
+        self.weight = w
+        self.type = im_type
         self.date_upload = datetime.utcnow()
 
     def get_id(self):
