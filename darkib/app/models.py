@@ -1,9 +1,6 @@
 from app import db
 from datetime import datetime
 
-ROLE_USER = 0
-ROLE_ADMIN = 1
-
 class User(db.Model):
     id = db.Column('user_id', db.Integer, primary_key = True)
     username  = db.Column('username', db.String(20))
