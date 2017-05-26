@@ -1,8 +1,11 @@
-from flask import render_template, flash, redirect, session, url_for, request, g
+from flask import render_template, flash, redirect, session, url_for, request, g, send_from_directory
 from app import app, db, lm
 from flask_login import login_user, logout_user, current_user, login_required
 from .forms import LoginForm
-from models import User
+from models import User, Images
+from werkzeug.utils import secure_filename
+from os import path, makedirs
+from hashlib import md5
 
 @app.route('/')
 @app.route('/index')
@@ -77,3 +80,49 @@ def user(nickname):
 
     return render_template('user.html', user=g.user)
 
+#Upload
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+
+        if file and allowed_file(file.filename):
+            #calculating MD5 Hash and use it as filename
+            md5_hash = calc_md5(file)
+            save_dir = path.join( app.config['UPLOAD_FOLDER'], md5_hash[0:3])
+            if not path.exists( save_dir ):
+                makedirs( save_dir )
+
+            save_path = path.join(save_dir, md5_hash)
+            file.save(save_path)
+
+            flash('File succefuly uploaded. MD5: ' + md5_hash )
+            return redirect(url_for('index'))
+
+    return render_template('upload.html')
+
+@app.route('/uploads/<filename>')
+@login_required
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+def calc_md5(fname):
+    hash_md5 = md5()
+    for chunk in iter(lambda: fname.read(4096), b""):
+        hash_md5.update(chunk)
+    return hash_md5.hexdigest()

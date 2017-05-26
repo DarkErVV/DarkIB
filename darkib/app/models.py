@@ -29,11 +29,12 @@ class User(db.Model):
 
 class Images(db.Model):
     id =  db.Column( db.Integer, primary_key = True) 
-    md5_hash =  db.Column( db.String(40) )
+    md5_hash = db.Column( db.String(40) )
     height = db.Column( db.Integer )
     weight = db.Column( db.Integer )
     type = db.Column( db.Integer )
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    date_upload = db.Column( db.DateTime )
+    user_id = db.Column( db.Integer, db.ForeignKey('user.user_id') )
 
 def __repr__(self):
     return '<Post %r>' % (self.body)
