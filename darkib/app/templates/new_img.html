@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <h3>New images.</h3>
-    {% for img in range(20) %}
-        <div> IMG {{ img  }} </div>
+    {% for i in img %}
+        <div><img src="/thumbs/{{ i.md5_hash }}" title="{{ i.md5_hash  }}" /> </div>
     {% endfor %}
 {% endblock%}

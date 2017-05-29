@@ -18,7 +18,9 @@ def index():
 
 @app.route('/new')
 def new_img():
-    return  render_template("new_img.html")
+    img =  Images.query.limit(20).all()
+
+    return  render_template("new_img.html", img=img)
 
 @app.route('/about')
 def about():
@@ -150,10 +152,15 @@ def upload_file():
 
     return render_template('upload.html')
 
-@app.route('/uploads/<filename>')
+@app.route('/thumbs/<filename>')
 @login_required
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+def send_file(filename):
+    #send_dir = path.join( app.config['UPLOAD_FOLDER'], filename[0:3])
+    #print(send_dir)
+    try:
+        return send_from_directory( app.config['UPLOAD_FOLDER'], filename )
+    except:
+        raise()
 
 def calc_md5(fname):
     hash_md5 = md5()

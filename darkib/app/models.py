@@ -48,4 +48,4 @@ class Images(db.Model):
         return unicode(self.id)
 
     def __repr__(self):
-        return '<Img MD5: %r>' % (self.body)
+        return '<Img MD5: %r>' % (self.md5_hash)
