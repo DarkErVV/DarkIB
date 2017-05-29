@@ -105,26 +105,23 @@ def upload_file():
             return redirect(request.url)
 
         if file and allowed_file(file.filename):
-            temp_file = tempfile.NamedTemporaryFile()
-            file.save(temp_file)
+            #Get secure filename
+            sec_fname = secure_filename(file.filename)
+            file.save(sec_fname)
 
-            #calculating MD5 Hash and use it as filename
-            md5_hash = calc_md5( temp_file.name )
+            #Calculating MD5 hash and use it as filename
+            md5_hash = calc_md5( sec_fname )
             save_dir = path.join( app.config['UPLOAD_FOLDER'], md5_hash[0:3] )
             if not path.exists( save_dir ):
                 makedirs( save_dir )
 
             save_path = path.join(save_dir, md5_hash)
-            shutil.copy2(temp_file.name, save_path)
+            shutil.copy2(sec_fname, save_path)
 
-            temp_file.close()
-
-            #get resolution of image
+            #Get resolution of image
             im = Image.open(save_path)
-            
-            print(im)
 
-            im_type = 0
+            im_type = 0 # default Image type
 
             if im.format == 'JPEG':
                im_type = 0
