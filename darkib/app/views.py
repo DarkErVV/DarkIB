@@ -133,6 +133,17 @@ def upload_file():
             img = Images(md5_hash, im.size[1], im.size[0], im_type, g.user.id)
             db.session.add(img)
             db.session.commit()
+            
+            #Image thumnail
+            im.thumbnail(app.config['THUMBNAIL_SIZE'], Image.ANTIALIAS)
+            
+            thumbs_dir = path.join(app.config['THUMBNAIL_FOLDER'], md5_hash[0:3])
+
+            if not path.exists( thumbs_dir ):
+                makedirs( thumbs_dir )
+            
+            im.save(path.join(thumbs_dir, md5_hash), "JPEG")
+
 
             flash('File succefuly uploaded. MD5: ' + md5_hash )
             return redirect(url_for('index'))
