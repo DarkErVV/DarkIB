@@ -158,7 +158,6 @@ def upload_file():
     return render_template('upload.html')
 
 @app.route('/thumbs/<filename>')
-@login_required
 def send_thumbs(filename):
     root_dir = path.dirname(getcwd())
     send_dir = path.join(root_dir, 'darkib', app.config['THUMBNAIL_FOLDER'], filename[0:3])
@@ -167,7 +166,6 @@ def send_thumbs(filename):
 
 
 @app.route('/img/<filename>')
-@login_required
 def send_file(filename):
     root_dir = path.dirname(getcwd())
     send_dir = path.join(root_dir, 'darkib', app.config['UPLOAD_FOLDER'], filename[0:3])
