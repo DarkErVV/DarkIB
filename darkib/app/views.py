@@ -10,23 +10,27 @@ from PIL import Image
 import tempfile
 import shutil
 
+
 @app.route('/')
 @app.route('/index')
 def index():
     user = g.user
-    return  render_template("index.html", user=user )
+    return render_template("index.html", user=user)
+
 
 @app.route('/new')
 def new_img():
-    img =  Images.query.limit(20).all()
+    img = Images.query.limit(20).all()
 
-    return  render_template("new_img.html", img=img)
+    return render_template("new_img.html", img=img)
+
 
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route('/register', methods=['GET','POST'])
+
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         return render_template('register.html')
@@ -42,14 +46,14 @@ def login():
     if request.method == 'GET':
         return render_template('login.html')
 
-    #Get data from request
+    # Get data from request
     username = request.form['username']
     password = request.form['password']
 
-    #Database Query
+    # Database Query
     registered_user = User.query.filter_by(username=username, password=password).first()
 
-    #User is not present in database
+    # User is not present in database
     if registered_user is None:
         flash('Username or Password is invalid', 'error')
         return redirect(url_for('login'))
@@ -57,24 +61,29 @@ def login():
     login_user(registered_user)
     flash('Logged in successfully')
 
-    return  redirect(request.args.get(next) or url_for('index'))
+    return redirect(request.args.get(next) or url_for('index'))
+
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
+
 @app.before_request
 def before_request():
     g.user = current_user
+
 
 @lm.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
 
 @app.route('/user/<nickname>')
 @login_required
@@ -85,10 +94,12 @@ def user(nickname):
 
     return render_template('user.html', user=g.user)
 
-#Upload
+
+# Upload
 def allowed_file(filename):
     return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
@@ -107,28 +118,28 @@ def upload_file():
             return redirect(request.url)
 
         if file and allowed_file(file.filename):
-            #Get secure filename
+            # Get secure filename
             sec_fname = path.join(app.config['TEMP_FOLDER'], secure_filename(file.filename))
             file.save(sec_fname)
 
-            #Calculating MD5 hash and use it as filename
-            md5_hash = calc_md5( sec_fname )
-            save_dir = path.join( app.config['UPLOAD_FOLDER'], md5_hash[0:3] )
-            if not path.exists( save_dir ):
-                makedirs( save_dir )
-            #copy to new dir
+            # Calculating MD5 hash and use it as filename
+            md5_hash = calc_md5(sec_fname)
+            save_dir = path.join(app.config['UPLOAD_FOLDER'], md5_hash[0:3])
+            if not path.exists(save_dir):
+                makedirs(save_dir)
+            # copy to new dir
             save_path = path.join(save_dir, md5_hash)
             shutil.copy2(sec_fname, save_path)
-            #remove temp
+            # remove temp
             remove(sec_fname)
 
-            #Get resolution of image
+            # Get resolution of image
             im = Image.open(save_path)
 
-            im_type = 0 # default Image type
+            im_type = 0  # default Image type
 
             if im.format == 'JPEG':
-               im_type = 0
+                im_type = 0
             elif im.format == 'PNG':
                 im_type = 1
             elif im.format == 'GIF':
@@ -138,24 +149,25 @@ def upload_file():
             db.session.add(img)
             db.session.commit()
 
-            #Image thumbnail            
+            # Image thumbnail
             thumbs_dir = path.join(app.config['THUMBNAIL_FOLDER'], md5_hash[0:3])
 
-            if not path.exists( thumbs_dir ):
-                makedirs( thumbs_dir )
+            if not path.exists(thumbs_dir):
+                makedirs(thumbs_dir)
 
-            save_path =  path.join(thumbs_dir, md5_hash)
+            save_path = path.join(thumbs_dir, md5_hash)
             try:
-                #print(save_path)
-                im.thumbnail(app.config['THUMBNAIL_SIZE'], Image.ANTIALIAS )
+                # print(save_path)
+                im.thumbnail(app.config['THUMBNAIL_SIZE'], Image.ANTIALIAS)
                 im.save(save_path, "JPEG")
             except IOError:
                 print("cannot create thumbnail")
 
-            flash('File succefuly uploaded. MD5: ' + md5_hash )
+            flash('File successfully uploaded. MD5: ' + md5_hash)
             return redirect(url_for('index'))
 
     return render_template('upload.html')
+
 
 @app.route('/thumbs/<filename>')
 def send_thumbs(filename):
@@ -172,9 +184,10 @@ def send_file(filename):
 
     return send_from_directory(send_dir, filename, mimetype='image/jpeg')
 
+
 def calc_md5(fname):
     hash_md5 = md5()
-    with open(fname, "rb" ) as f:
+    with open(fname, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
