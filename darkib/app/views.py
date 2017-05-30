@@ -146,7 +146,7 @@ def upload_file():
 
             save_path =  path.join(thumbs_dir, md5_hash)
             try:
-                #print(save_path)
+                print(calc_resize(im.size[1], im.size[0], app.config['THUMBNAIL_SIZE'][0], app.config['THUMBNAIL_SIZE'][1] ))
                 im.thumbnail(app.config['THUMBNAIL_SIZE'], Image.ANTIALIAS )
                 im.save(save_path, "JPEG")
             except IOError:
@@ -178,3 +178,35 @@ def calc_md5(fname):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
+def calc_resize(src_w, src_h, dst_w, dst_h):
+    if (src_w == 0)  and (src_h == 0):
+        return False
+    
+    res_h = 0 
+    res_w = 0
+
+    #calc ratio
+    src_ratio = float(src_h) / float(src_w)
+
+    if dst_w == 0: dst_w = int(dst_h / src_ratio)
+    if dst_h == 0: dst_h = int(dst_w * src_ratio)
+
+    if( src_ratio < 1):
+        res_h = dst_h
+        res_w = int(dst_h / src_ratio)
+        
+        if dst_w > res_w:
+            res_w = dst_w
+            res_h = int(dst_w * src_ratio)
+
+    else:
+        res_w = dst_w
+        res_h = int(dst_h * src_ratio)
+        
+        if res_h > dst_h:
+            res_h = dst_h
+            dst_w = dst_h / src_ratio
+
+
+    return (res_w, res_h)
