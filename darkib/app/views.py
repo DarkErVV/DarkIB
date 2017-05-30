@@ -157,13 +157,11 @@ def upload_file():
 
             save_path = path.join(thumbs_dir, md5_hash)
             try:
-<<<<<<< HEAD
-                print(calc_resize(im.size[1], im.size[0], app.config['THUMBNAIL_SIZE'][0], app.config['THUMBNAIL_SIZE'][1] ))
-                im.thumbnail(app.config['THUMBNAIL_SIZE'], Image.ANTIALIAS )
-=======
-                # print(save_path)
-                im.thumbnail(app.config['THUMBNAIL_SIZE'], Image.ANTIALIAS)
->>>>>>> 1a2c75a82e373baa6066e5eeaf69ce7f5a52b90a
+
+                new_size = calc_resize(im.size[0], im.size[1], app.config['THUMBNAIL_SIZE'][0], app.config['THUMBNAIL_SIZE'][1] )
+                print(new_size)
+
+                im.thumbnail(new_size, Image.ANTIALIAS )
                 im.save(save_path, "JPEG")
             except IOError:
                 print("cannot create thumbnail")
