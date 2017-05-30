@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from .forms import LoginForm
 from models import User, Images
 from werkzeug.utils import secure_filename
-from os import path, makedirs
+from os import path, makedirs, getcwd, remove
 from hashlib import md5
 from PIL import Image
 import tempfile
@@ -108,7 +108,7 @@ def upload_file():
 
         if file and allowed_file(file.filename):
             #Get secure filename
-            sec_fname = secure_filename(file.filename)
+            sec_fname = path.join(app.config['TEMP_FOLDER'], secure_filename(file.filename))
             file.save(sec_fname)
 
             #Calculating MD5 hash and use it as filename
@@ -116,9 +116,11 @@ def upload_file():
             save_dir = path.join( app.config['UPLOAD_FOLDER'], md5_hash[0:3] )
             if not path.exists( save_dir ):
                 makedirs( save_dir )
-
+            #copy to new dir
             save_path = path.join(save_dir, md5_hash)
             shutil.copy2(sec_fname, save_path)
+            #remove temp
+            remove(sec_fname)
 
             #Get resolution of image
             im = Image.open(save_path)
@@ -135,17 +137,20 @@ def upload_file():
             img = Images(md5_hash, im.size[1], im.size[0], im_type, g.user.id)
             db.session.add(img)
             db.session.commit()
-            
-            #Image thumnail
-            im.thumbnail(app.config['THUMBNAIL_SIZE'], Image.ANTIALIAS)
-            
+
+            #Image thumbnail            
             thumbs_dir = path.join(app.config['THUMBNAIL_FOLDER'], md5_hash[0:3])
 
             if not path.exists( thumbs_dir ):
                 makedirs( thumbs_dir )
-            
-            im.save(path.join(thumbs_dir, md5_hash), "JPEG")
 
+            save_path =  path.join(thumbs_dir, md5_hash)
+            try:
+                #print(save_path)
+                im.thumbnail(app.config['THUMBNAIL_SIZE'], Image.ANTIALIAS )
+                im.save(save_path, "JPEG")
+            except IOError:
+                print("cannot create thumbnail")
 
             flash('File succefuly uploaded. MD5: ' + md5_hash )
             return redirect(url_for('index'))
@@ -154,13 +159,20 @@ def upload_file():
 
 @app.route('/thumbs/<filename>')
 @login_required
+def send_thumbs(filename):
+    root_dir = path.dirname(getcwd())
+    send_dir = path.join(root_dir, 'darkib', app.config['THUMBNAIL_FOLDER'], filename[0:3])
+
+    return send_from_directory(send_dir, filename, mimetype='image/jpeg')
+
+
+@app.route('/img/<filename>')
+@login_required
 def send_file(filename):
-    #send_dir = path.join( app.config['UPLOAD_FOLDER'], filename[0:3])
-    #print(send_dir)
-    try:
-        return send_from_directory( app.config['UPLOAD_FOLDER'], filename )
-    except:
-        raise()
+    root_dir = path.dirname(getcwd())
+    send_dir = path.join(root_dir, 'darkib', app.config['UPLOAD_FOLDER'], filename[0:3])
+
+    return send_from_directory(send_dir, filename, mimetype='image/jpeg')
 
 def calc_md5(fname):
     hash_md5 = md5()

@@ -16,6 +16,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 UPLOAD_FOLDER = 'app/media/img/'
 THUMBNAIL_FOLDER = 'app/media/thumbs/'
 ALLOWED_EXTENSIONS = set([ 'png', 'jpg', 'jpeg', 'gif'])
+TEMP_FOLDER = 'app/temp'
 
 #Image
 THUMBNAIL_SIZE =  200, 200
