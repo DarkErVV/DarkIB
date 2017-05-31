@@ -19,4 +19,4 @@ ALLOWED_EXTENSIONS = set([ 'png', 'jpg', 'jpeg', 'gif'])
 TEMP_FOLDER = 'app/temp'
 
 #Image
-THUMBNAIL_SIZE =  0, 200
+THUMBNAIL_SIZE = 200, 200
