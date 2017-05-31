@@ -4,7 +4,7 @@ body {
 }
 
 a {
-color: #AA0000;
+    color: #AA0000;
 }
 
 a:hower {
@@ -47,9 +47,8 @@ a:hower {
     height: 35px;
     margin: 15px 15px 5px;
     padding-top: 20px;
-    text-align: center;">
+    text-align: center;
 }
-
 
 .menu{
     display: inline;
