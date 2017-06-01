@@ -1,10 +1,12 @@
 body {
     color: white;
     background-color: black;
+    font-family: Verdana, Helvetica, Arial, sans-serif;
 }
 
 a {
-    color: #AA0000;
+    color: #80b3FF;
+    text-decoration: none;
 }
 
 a:hower {
@@ -51,5 +53,12 @@ a:hower {
 }
 
 .menu{
-    display: inline;
+    padding: 5px;
+    font-size: large;
+    }
+
+.login{
+    float: right;
+    padding: 0 10px 0 0;
+    font-size: large;
 }
