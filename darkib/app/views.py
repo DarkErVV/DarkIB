@@ -15,19 +15,19 @@ import shutil
 @app.route('/index')
 def index():
     user = g.user
-    return render_template("index.html", user=user)
+    return render_template("index.html", user=user, content_title="Main Page.")
 
 
 @app.route('/new')
 def new_img():
     img = Images.query.limit(20).all()
 
-    return render_template("new_img.html", img=img)
+    return render_template("new_img.html", img=img, content_title="New Images.")
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html', content_title="About.")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -158,8 +158,6 @@ def upload_file():
             save_path = path.join(thumbs_dir, md5_hash)
             try:
                 im.thumbnail((200,200), Image.ANTIALIAS )
-                #print(im.size)
-                
                 im.save(save_path, "JPEG")
             except IOError:
                 print("cannot create thumbnail")
