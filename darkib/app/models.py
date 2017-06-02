@@ -34,15 +34,19 @@ class Images(db.Model):
     md5_hash = db.Column(db.String(40))
     height = db.Column(db.Integer)
     weight = db.Column(db.Integer)
+    t_height = db.Column(db.Integer)    # Thumbnail height
+    t_width = db.Column(db.Integer)     # Thumbnail width
     type = db.Column(db.Integer)
     date_upload = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
 
-    def __init__(self, md5_hash, h, w, im_type, user_id):
+    def __init__(self, md5_hash, h, w, t_h, t_w, im_type, user_id):
         self.md5_hash = md5_hash
         self.user_id = user_id
         self.height = h
         self.weight = w
+        self.t_height = t_h
+        self.t_width = t_w
         self.type = im_type
         self.date_upload = datetime.utcnow()
 

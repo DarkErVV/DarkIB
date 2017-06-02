@@ -145,9 +145,7 @@ def upload_file():
             elif im.format == 'GIF':
                 im_type = 2
 
-            img = Images(md5_hash, im.size[1], im.size[0], im_type, g.user.id)
-            db.session.add(img)
-            db.session.commit()
+            original_size = im.size
 
             # Image thumbnail
             thumbs_dir = path.join(app.config['THUMBNAIL_FOLDER'], md5_hash[0:3])
@@ -161,6 +159,10 @@ def upload_file():
                 im.save(save_path, "JPEG")
             except IOError:
                 print("cannot create thumbnail")
+
+            img = Images(md5_hash, original_size[1], original_size[0]. im.size[1], im.size[0], im_type, g.user.id)
+            db.session.add(img)
+            db.session.commit()
 
             flash('File successfully uploaded. MD5: ' + md5_hash)
             return redirect(url_for('index'))
