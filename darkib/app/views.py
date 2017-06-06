@@ -160,7 +160,7 @@ def upload_file():
             except IOError:
                 print("cannot create thumbnail")
 
-            img = Images(md5_hash, original_size[1], original_size[0]. im.size[1], im.size[0], im_type, g.user.id)
+            img = Images(md5_hash, original_size[1], original_size[0], im.size[1], im.size[0], im_type, g.user.id)
             db.session.add(img)
             db.session.commit()
 
