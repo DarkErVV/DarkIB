@@ -63,6 +63,14 @@ def login():
 
     return redirect(request.args.get(next) or url_for('index'))
 
+@app.route('/img/<md5_hash>')
+def view_img(md5_hash):
+    img = Images.query.filter_by(md5_hash=md5_hash).first()
+    if img is None:
+        flash('Image not found.')
+        return redirect(url_for('new'))
+    
+    return render_template('img_view.html', img=img, content_title="Image Information.")
 
 @app.route('/logout')
 def logout():
@@ -178,7 +186,7 @@ def send_thumbs(filename):
     return send_from_directory(send_dir, filename, mimetype='image/jpeg')
 
 
-@app.route('/img/<filename>')
+@app.route('/file/<filename>')
 def send_file(filename):
     root_dir = path.dirname(getcwd())
     send_dir = path.join(root_dir, 'darkib', app.config['UPLOAD_FOLDER'], filename[0:3])

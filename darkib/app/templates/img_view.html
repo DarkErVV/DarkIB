@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}  
+   <div id="img_info">
+       <img src="/file/{{ img.md5_hash }}"  width="400px">
+   </div>
+
+   <div id="img_info_text">
+   <h4>Information:</h4>
+      Size: {{ img.height  }} x  {{ img.width }}.
+      MD5: {{ img.md5_hash }}
+   </div>
+{% endblock %}
+

@@ -53,6 +53,15 @@ a:hover {
     text-align: center;
 }
 
+
+#img_info{
+    display: inline-block;
+}
+
+#img_info_text{
+    display: inline-block;
+}
+
 .menu{
     padding: 5px;
     font-size: large;
@@ -92,3 +101,4 @@ a:hover {
 
 .img_mini{
 }
+
