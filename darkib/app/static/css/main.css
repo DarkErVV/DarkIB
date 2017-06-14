@@ -60,6 +60,8 @@ a:hover {
 
 #img_info_text{
     display: inline-block;
+    vertical-align: top;
+    text-align: left;
 }
 
 .menu{
