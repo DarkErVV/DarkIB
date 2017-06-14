@@ -33,7 +33,7 @@ class Images(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     md5_hash = db.Column(db.String(40))
     height = db.Column(db.Integer)
-    weight = db.Column(db.Integer)
+    width = db.Column(db.Integer)
     t_height = db.Column(db.Integer)    # Thumbnail height
     t_width = db.Column(db.Integer)     # Thumbnail width
     type = db.Column(db.Integer)
@@ -44,7 +44,7 @@ class Images(db.Model):
         self.md5_hash = md5_hash
         self.user_id = user_id
         self.height = h
-        self.weight = w
+        self.width = w
         self.t_height = t_h
         self.t_width = t_w
         self.type = im_type
