@@ -53,21 +53,37 @@ a:hover {
     text-align: center;
 }
 
-
 #img_info{
-    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#img_info_text{
-    display: inline-block;
+#img_info td{
+    
+    margin: 0px 5px 5px 5px;
+    padding: 10px 10px 10px 10px;
     vertical-align: top;
+
+    background-color: #131625;
+}
+
+#img_info h4{
+    padding: 10px 10px 10px 10px;
+    border-top: 1px solid #33495f;
+    border-bottom: 1px solid #33495f;
+}
+
+#img_info.details_text{            
+    padding: 5px 5px 5px 20px;
     text-align: left;
+    font-size: medium;
 }
 
 .menu{
     padding: 5px;
     font-size: large;
-    }
+}
+
 
 .login{
     float: right;
