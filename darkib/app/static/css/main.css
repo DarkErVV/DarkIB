@@ -42,9 +42,8 @@ a:hover {
 #footer{
     border: 1px solid #33495f;
     position: absolute; 
-    bottom: 0px;
-    height: 150px;    
-    width: 95%;
+    bottom: 0px;    
+    width: 98%;
     clear: both;
     font-size: 12px;
     height: 35px;
