@@ -10,12 +10,16 @@ from PIL import Image
 import tempfile
 import shutil
 
+from  sqlalchemy.sql.expression import func
+
 
 @app.route('/')
 @app.route('/index')
 def index():
     user = g.user
-    return render_template("index.html", user=user, content_title="Main Page.")
+    img_last = Images.query.limit(3).all()
+    img_rand = Images.query.order_by(func.rand()).limit(3).all()
+    return render_template("index.html", img_last=img_last, img_rand=img_rand, user=user, content_title="Main Page.")
 
 
 @app.route('/new')
