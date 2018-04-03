@@ -4,4 +4,4 @@
 - Create basic Flask application
 - Disign database structure
 - Connect Flask to database with SQLAlchemy
-- Learn Add DB migrations
+- Learn and add DataBase migrations
