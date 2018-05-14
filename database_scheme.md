@@ -34,5 +34,3 @@
 | password |varchar(10)||
 | email|varchar(50)||
 | registred_on |datetime)||
-
-upd.
