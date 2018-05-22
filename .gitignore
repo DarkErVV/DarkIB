@@ -1,3 +1,4 @@
 venv/
 darkib/app/database_conf.py
 *.pyc
+*.swp
