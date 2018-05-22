@@ -33,21 +33,20 @@ a:hover {
     border: 1px solid #33495f;
     bottom: 0px;       
     font-size: 12px;    
-    margin: 0px 0px 5px 0px;
+    margin: 0px 0px 0px 0px;
     padding: 10px;
     text-align: center;
     
 }
 
 #footer{
-    border: 1px solid #33495f;
-    position: absolute; 
+    border: 1px solid #33495f;    
     bottom: 0px;    
-    width: 98%;
+    width: 100%;
     clear: both;
     font-size: 12px;
     height: 35px;
-    margin: 15px 15px 5px;
+    margin: 15px 0px 5px;
     padding-top: 20px;
     text-align: center;
 }
