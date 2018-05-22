@@ -17,14 +17,14 @@ from  sqlalchemy.sql.expression import func
 @app.route('/index')
 def index():
     user = g.user
-    img_last = Images.query.limit(3).all()
+    img_last = Images.query.order_by("id desc").limit(3).all()
     img_rand = Images.query.order_by(func.rand()).limit(3).all()
     return render_template("index.html", img_last=img_last, img_rand=img_rand, user=user, content_title="Main Page.")
 
 
 @app.route('/new')
 def new_img():
-    img = Images.query.limit(20).all()
+    img = Images.query.order_by("id desc").limit(20).all()
 
     return render_template("new_img.html", img=img, content_title="New Images.")
 
@@ -194,8 +194,8 @@ def send_thumbs(filename):
 def send_file(filename):
     root_dir = path.dirname(getcwd())
     send_dir = path.join(root_dir, 'darkib', app.config['UPLOAD_FOLDER'], filename[0:3])
-
-    return send_from_directory(send_dir, filename, mimetype='image/jpeg')
+    print(root_dir,send_dir,filename)
+    return send_from_directory(send_dir, filename, mimetype='image')
 
 
 def calc_md5(fname):
