@@ -73,7 +73,7 @@ def view_img(md5_hash):
     if img is None:
         flash('Image not found.')
         return redirect(url_for('new'))
-    
+
     return render_template('img_view.html', img=img, content_title="Image Information.")
 
 @app.route('/logout')
@@ -194,9 +194,21 @@ def send_thumbs(filename):
 def send_file(filename):
     root_dir = path.dirname(getcwd())
     send_dir = path.join(root_dir, 'darkib', app.config['UPLOAD_FOLDER'], filename[0:3])
-    print(root_dir,send_dir,filename)
     return send_from_directory(send_dir, filename, mimetype='image')
 
+@app.route('/del/<md5_hash>')
+@login_required
+def delete_img(md5_hash):
+    img = Images.query.filter_by(md5_hash=md5_hash).first()
+    if img is None:
+        flash('Image not found.')
+        return redirect(url_for('new'))
+
+    #remove file from dir
+    del_file = path.join(path.dirname(getcwd()),'darkib', app.config['UPLOAD_FOLDER'], img.md5_hash[0:3])
+    print(del_file)
+    flash('Function under construction.')
+    return redirect(url_for('index'))
 
 def calc_md5(fname):
     hash_md5 = md5()
