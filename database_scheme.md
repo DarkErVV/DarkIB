@@ -11,7 +11,7 @@
 | width | int | pixels  |
 | type | smallint | 0: gif, 1: png,   2: jpg,|
 | uid  | foreigh key, int| id uploaded user |
-
+|date_upload| datatime | 
 
 ### Tags
 | Name | Type | Discription |
