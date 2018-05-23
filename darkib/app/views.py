@@ -10,7 +10,7 @@ from PIL import Image
 import tempfile
 import shutil
 
-from  sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import func
 
 
 @app.route('/')
@@ -67,6 +67,7 @@ def login():
 
     return redirect(request.args.get(next) or url_for('index'))
 
+
 @app.route('/img/<md5_hash>')
 def view_img(md5_hash):
     img = Images.query.filter_by(md5_hash=md5_hash).first()
@@ -75,6 +76,7 @@ def view_img(md5_hash):
         return redirect(url_for('new'))
 
     return render_template('img_view.html', img=img, content_title="Image Information.")
+
 
 @app.route('/logout')
 def logout():
@@ -167,7 +169,7 @@ def upload_file():
 
             save_path = path.join(thumbs_dir, md5_hash)
             try:
-                im.thumbnail((200,200), Image.ANTIALIAS )
+                im.thumbnail((200, 200), Image.ANTIALIAS)
                 im.save(save_path, "JPEG")
             except IOError:
                 print("cannot create thumbnail")
@@ -196,6 +198,7 @@ def send_file(filename):
     send_dir = path.join(root_dir, 'darkib', app.config['UPLOAD_FOLDER'], filename[0:3])
     return send_from_directory(send_dir, filename, mimetype='image')
 
+
 @app.route('/del/<md5_hash>')
 @login_required
 def delete_img(md5_hash):
@@ -204,11 +207,12 @@ def delete_img(md5_hash):
         flash('Image not found.')
         return redirect(url_for('new'))
 
-    #remove file from dir
-    del_file = path.join(path.dirname(getcwd()),'darkib', app.config['UPLOAD_FOLDER'], img.md5_hash[0:3])
+    # remove file from dir
+    del_file = path.join(path.dirname(getcwd()), 'darkib', app.config['UPLOAD_FOLDER'], img.md5_hash[0:3])
     print(del_file)
     flash('Function under construction.')
     return redirect(url_for('index'))
+
 
 def calc_md5(fname):
     hash_md5 = md5()
@@ -216,4 +220,3 @@ def calc_md5(fname):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
-
